@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || 'https://kbnnoxp0k1.execute-api.eu-west-2.amazonaws.com/prod/calculate';
 
 export default function Calculator() {
   const [a, setA] = useState('');
