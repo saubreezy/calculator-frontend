@@ -48,18 +48,30 @@ export default function Converter() {
       let resultValue;
       if (data.result !== undefined) {
         resultValue = data.result;
+        console.log('Found result in data.result:', resultValue);
       } else if (data.value !== undefined) {
         resultValue = data.value;
+        console.log('Found result in data.value:', resultValue);
       } else if (data.body) {
         // Parse the body if it's a JSON string
+        console.log('Parsing body:', data.body, 'Type:', typeof data.body);
         const bodyData = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+        console.log('Parsed body data:', bodyData);
         resultValue = bodyData.result;
+        console.log('Extracted result from body:', resultValue);
       } else {
         console.error('Unexpected response format:', data);
         throw new Error('Unexpected response format from API');
       }
       
-      console.log('Result value:', resultValue);
+      console.log('Final result value:', resultValue);
+      
+      // Safety check
+      if (resultValue === undefined || resultValue === null) {
+        console.error('Result value is undefined or null:', resultValue);
+        throw new Error('No result value found in API response');
+      }
+      
       setResult(resultValue);
     } catch (err) {
       console.error('Fetch error:', err);
