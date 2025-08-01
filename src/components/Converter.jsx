@@ -109,7 +109,7 @@ export default function Converter() {
       </button>
       {result !== null && (
         <div style={{ marginTop: 16 }}>
-          Result: <strong>{result.toFixed(4)} {getOutputLabel()}</strong>
+          Result: <strong>{typeof result === 'number' ? result.toFixed(4) : result} {getOutputLabel()}</strong>
         </div>
       )}
       {error && (
