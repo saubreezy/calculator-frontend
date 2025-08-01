@@ -9,6 +9,9 @@ export default function Converter() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Debug: Log result state changes
+  console.log('Current result state:', result, 'Type:', typeof result);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -137,7 +140,18 @@ export default function Converter() {
       </button>
       {result !== null && result !== undefined && (
         <div style={{ marginTop: 16 }}>
-          Result: <strong>{typeof result === 'number' ? result.toFixed(4) : result} {getOutputLabel()}</strong>
+          Result: <strong>
+            {(() => {
+              console.log('Rendering result:', result, 'Type:', typeof result);
+              if (typeof result === 'number' && !isNaN(result)) {
+                return result.toFixed(4);
+              } else if (result !== null && result !== undefined) {
+                return String(result);
+              } else {
+                return 'Error: Invalid result';
+              }
+            })()} {getOutputLabel()}
+          </strong>
         </div>
       )}
       {error && (
