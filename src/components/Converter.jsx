@@ -50,8 +50,10 @@ export default function Converter() {
         resultValue = data.result;
       } else if (data.value !== undefined) {
         resultValue = data.value;
-      } else if (data.body && data.body.result !== undefined) {
-        resultValue = data.body.result;
+      } else if (data.body) {
+        // Parse the body if it's a JSON string
+        const bodyData = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+        resultValue = bodyData.result;
       } else {
         console.error('Unexpected response format:', data);
         throw new Error('Unexpected response format from API');
