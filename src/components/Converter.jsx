@@ -41,6 +41,9 @@ export default function Converter() {
       
       const data = await response.json();
       console.log('Success response:', data);
+      console.log('Response type:', typeof data);
+      console.log('Data keys:', Object.keys(data));
+      console.log('Result value:', data.result);
       setResult(data.result);
     } catch (err) {
       console.error('Fetch error:', err);
