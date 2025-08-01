@@ -123,7 +123,7 @@ export default function Converter() {
       <button type="submit" disabled={loading} style={{ marginTop: 12 }}>
         {loading ? 'Converting...' : getConversionLabel()}
       </button>
-      {result !== null && (
+      {result !== null && result !== undefined && (
         <div style={{ marginTop: 16 }}>
           Result: <strong>{typeof result === 'number' ? result.toFixed(4) : result} {getOutputLabel()}</strong>
         </div>
