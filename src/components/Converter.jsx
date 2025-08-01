@@ -43,8 +43,22 @@ export default function Converter() {
       console.log('Success response:', data);
       console.log('Response type:', typeof data);
       console.log('Data keys:', Object.keys(data));
-      console.log('Result value:', data.result);
-      setResult(data.result);
+      
+      // Handle different response formats
+      let resultValue;
+      if (data.result !== undefined) {
+        resultValue = data.result;
+      } else if (data.value !== undefined) {
+        resultValue = data.value;
+      } else if (data.body && data.body.result !== undefined) {
+        resultValue = data.body.result;
+      } else {
+        console.error('Unexpected response format:', data);
+        throw new Error('Unexpected response format from API');
+      }
+      
+      console.log('Result value:', resultValue);
+      setResult(resultValue);
     } catch (err) {
       console.error('Fetch error:', err);
       setError(err.message);
