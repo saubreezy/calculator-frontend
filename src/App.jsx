@@ -29,7 +29,6 @@ function AppContent() {
         alignItems: 'center', 
         marginBottom: '20px',
         padding: '10px',
-        backgroundColor: '#f8f9fa',
         borderRadius: '5px'
       }}>
         <h1 style={{ margin: 0 }}>Math & Conversion Tools</h1>
