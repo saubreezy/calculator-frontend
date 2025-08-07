@@ -1,13 +1,55 @@
 import { useState } from 'react';
+import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import Calculator from './components/Calculator';
 import Converter from './components/Converter';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './components/Login';
 
-function App() {
+function AppContent() {
   const [activeTab, setActiveTab] = useState('calculator');
+  const { instance, accounts } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
+
+  const handleLogout = () => {
+    instance.logout();
+  };
+
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
+  const account = accounts[0];
 
   return (
     <div style={{ maxWidth: 800, margin: '0 auto', padding: '20px' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>Math & Conversion Tools</h1>
+      {/* Header with user info and logout */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        marginBottom: '20px',
+        padding: '10px',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '5px'
+      }}>
+        <h1 style={{ margin: 0 }}>Math & Conversion Tools</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span>Welcome, {account?.name || account?.username}</span>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '5px 10px',
+              backgroundColor: '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '3px',
+              cursor: 'pointer'
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
       
       {/* Tab Navigation */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
@@ -44,6 +86,14 @@ function App() {
       {/* Content */}
       {activeTab === 'calculator' ? <Calculator /> : <Converter />}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ProtectedRoute>
+      <AppContent />
+    </ProtectedRoute>
   );
 }
 
