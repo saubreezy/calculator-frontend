@@ -1,27 +1,51 @@
-export const msalConfig = {
+// Get the current environment
+const getCurrentEnvironment = () => {
+  const hostname = window.location.hostname;
+  if (hostname.includes('dev.sauravtest.co.uk') || hostname.includes('localhost')) {
+    return 'development';
+  }
+  return 'production';
+};
+
+// Environment-specific configurations
+const developmentConfig = {
   auth: {
-    clientId: "a78cca7c-a191-4775-9aa6-fcddb80be626", // Your Application (client) ID
-    authority: "https://login.microsoftonline.com/calcapp22.onmicrosoft.com", // Your tenant ID
+    clientId: "1d2416b1-9af9-4cf6-bff1-c1720526ceed", // Calculator App - Development
+    authority: "https://login.microsoftonline.com/calcapp22.onmicrosoft.com",
     redirectUri: window.location.origin,
   },
   cache: {
-    cacheLocation: "sessionStorage", // This configures where your cache will be stored
-    storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
+    cacheLocation: "sessionStorage",
+    storeAuthStateInCookie: false,
   }
 };
 
-// Add scopes here for ID token to be used at Microsoft identity platform endpoints.
+const productionConfig = {
+  auth: {
+    clientId: "a78cca7c-a191-4775-9aa6-fcddb80be626", // Calculator App - Production
+    authority: "https://login.microsoftonline.com/calcapp22.onmicrosoft.com",
+    redirectUri: window.location.origin,
+  },
+  cache: {
+    cacheLocation: "sessionStorage",
+    storeAuthStateInCookie: false,
+  }
+};
+
+// Export the appropriate config based on environment
+export const msalConfig = getCurrentEnvironment() === 'development' ? developmentConfig : productionConfig;
+
+// Scopes for ID token
 export const loginRequest = {
   scopes: ["User.Read"]
 };
 
-// Add the endpoints here for Microsoft Graph API services you'd like to use.
+// Graph API endpoint
 export const graphConfig = {
   graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
 };
 
-// Group IDs for access control
-export const GROUP_IDS = {
-  DEVELOPERS: "95d6c283-4a72-4b91-8503-ed2abc0e343e",
-  ANALYSTS: "3042ab9a-a461-496c-ba70-6a3f11272237"
-};
+// Environment info for debugging
+export const currentEnvironment = getCurrentEnvironment();
+export const isDevelopment = getCurrentEnvironment() === 'development';
+export const isProduction = getCurrentEnvironment() === 'production';
